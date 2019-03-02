@@ -1,24 +1,27 @@
-# Pitches App
+# Blogging App
 
-#### The App that helps the user to login,create pitches,comment and vote for pitches, 26th,Feb,2019
+#### The App that helps the blogs writer to sign in and create a blog and the users to view the blog posts posts and comment on them, 26th,Feb,2019
 
 #### By **Assumpta Uwanyirijuru**
 
 ## Description
-The Pitches App will help the user to create an account on the app and receive a welcoming email, login into the account, create pitches, view the created pitches in the profile, comment and leave feedback on the different pitches and vote for/about self or other users' pitches.The user can submit a pitch in any category and view the different categories
+This Blogging App will help:
+*the blogs writer* to sign in to the blog,to create a blog from the application,to delete comments that found insulting or degrading,to update or delete blogs that been have created
+and
+Other users to view the blog posts on the site,to comment on blog posts,to view the most recent posts,to get an email alert when a new post is made by joining a subscription and to see random quotes on the site.
 
 ## Setup/Installation Requirements
 
 * Go to you machine terminal
 * Install Python3.6 and its third party flask modules
-* Write 'git clone https://github.com/Juru-10/pitches.git'
+* Write 'git clone https://github.com/Juru-10/blog.git'
 OR
 * Go to https://github.com
 * Search for Juru-10
 * Go to Juru-10 repositories
 * Get the repository called *pitches*
 OR
-* Go to https://github.com/Juru-10/pitches.git
+* Go to https://github.com/Juru-10/blog.git
 OR
 * Install the Heroku CLI
 * Download and install the Heroku CLI.
@@ -34,7 +37,7 @@ OR
 
 ## link to it on Heroku
 
-https://pitches10.herokuapp.com/
+https://blog10.herokuapp.com/
 
 ## Known Bugs
 
@@ -46,30 +49,32 @@ It is still in Development and that will be soon resolved.
 ### Behavior
 
 **Our program should handle:**
-1. to see the pitches other people have posted.
-2. to vote on the pitch they liked and give it a downvote or upvote.
-3. to be signed in for the user to leave a comment
-4. to receive a welcoming email once the user signs up.
-5. to view the pitches the user have created in her/his profile page.
-6. to comment on the different pitches and leave feedback.
-7. to submit a pitch in any category.
-8. to view the different categories.
+1. to sign in to the blog.(for the writer)
+2. to create a blog from the application.(for the writer)
+3. to delete comments that I find insulting or degrading.(for the writer)
+4. to update or delete blogs I have created.(for the writer)
+
+5. to view the blog posts on the site.(for the user)
+6. to comment on blog posts.(for the user)
+7. to view the most recent posts.(for the user)
+8. to to get an email alert when a new post is made by joining a subscription.(for the user)
+9. to see random quotes on the site(for the user)
 
 ### Input Example
 
 **When it receives:**
-1.
-2.
+1. the user's click on Comment button
+2. the user'subscription
 
 ### Output Example
 
 **It should return:**
-1.
-2.
+1. the form to input comment.
+2. the email alert when a new post is made.
 
 ## Technologies Used
 
-It is made by:
+This App is made with:
 * *postgresql*
 * *SQLAlchemy*
 * *python3.6*

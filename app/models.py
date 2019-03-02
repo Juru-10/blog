@@ -8,6 +8,38 @@ from datetime import datetime
 def load_user(user_id):
     return User.query.get(int(user_id))
 
+class Writer(UserMixin,db.Model):
+    __tablename__ = 'users'
+
+    id = db.Column(db.Integer,primary_key = True)
+    username = db.Column(db.String(255),index = True)
+    email = db.Column(db.String(255),unique = True,index = True)
+    # pitch_id = db.Column(db.Integer,db.ForeignKey('pitches.id'))
+    # comment_id = db.Column(db.Integer,db.ForeignKey('comments.id'))
+    # vote_id = db.Column(db.Integer,db.ForeignKey('votes.id'))
+    bio = db.Column(db.String)
+    profile_pic_path = db.Column(db.String())
+    pass_secure = db.Column(db.String(255))
+    pitches = db.relationship('Pitch', backref ='user',lazy = "dynamic")
+    # comments = db.relationship('Comment',backref = 'user',lazy = "dynamic")
+    # votes = db.relationship('Vote',backref = 'user',lazy = "dynamic")
+
+    @property
+    def password(self):
+        raise AttributeError('You cannot read the password attribute')
+
+    @password.setter
+    def password(self, password):
+        self.pass_secure = generate_password_hash(password)
+
+
+    def verify_password(self,password):
+        return check_password_hash(self.pass_secure,password)
+
+    def __repr__(self):
+        return f'User {self.username}'
+
+
 class User(UserMixin,db.Model):
     __tablename__ = 'users'
 
@@ -39,7 +71,7 @@ class User(UserMixin,db.Model):
     def __repr__(self):
         return f'User {self.username}'
 
-class Pitch(db.Model):
+class Post(db.Model):
     __tablename__ = 'pitches'
 
     id = db.Column(db.Integer,primary_key = True)
@@ -86,26 +118,3 @@ class Comment(db.Model):
 
     def __repr__(self):
         return f'User {self.name}'
-
-class Vote(db.Model):
-    __tablename__ = 'votes'
-
-    id = db.Column(db.Integer,primary_key = True)
-    upvote = db.Column(db.String(255))
-    downvote = db.Column(db.String(255))
-    # user_id = db.Column(db.Integer,db.ForeignKey("users.id"))
-    pitch_id = db.Column(db.Integer,db.ForeignKey("pitches.id"))
-    # users = db.relationship('User',backref = 'comment',lazy="dynamic")
-
-    # def save_vote(self):
-    #     db.session.add(self)
-    #     db.session.commit()
-
-    @classmethod
-    def get_votes(cls,id):
-        votes = Vote.query.filter_by(pitch_id=id).all()
-        return votes
-
-
-    def __repr__(self):
-        return f'User {self.upvote}'
