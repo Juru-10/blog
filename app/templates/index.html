@@ -12,26 +12,30 @@
 {% block content %}
 
 <div class="container" style="text-align:center;">
+
+  <div class="row" style="margin-bottom:80px">
+    <h3>Today's Random Quote</h3>
+    <p>{{quotes.quote}}</p>
+    By <h4>{{quotes.author}}</h4>
+  </div>
+
   <h1 style="text-align:center;margin-bottom:80px;">Posts</h1>
   <div class="row" id='post' style="display:grid;grid-template-columns: 30% 30% 30%;
-    grid-auto-rows: 25.6em;
+    grid-auto-rows: 300px;
     grid-gap: 60px;">
-
     {%for post in posts%}
     <li class="well"style="height:300px;"><h4>Post {{post.id}}</h4>
       <p>{{post.name}}</p>
+      Posted on
+      <p>{{post.posted}}</p>
       <p>By User {{post.user_id}}</p>
       <p><a href="{{url_for('main.new_comment',id=post.id)}}">Comment</a></p>
       <h3>Comments</h3>
-      {%for comment in comments%}
-        <p>{{comment.name}}</p>
-      {%endfor%}
-      <p>Posted on {{post.posted}}</p>
+      <p>{{macro.displayCommentList(comments)}}</p>
+
 
     </li>
-
     {%endfor%}
-
   </div>
 </div>
 {% endblock%}

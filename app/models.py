@@ -43,15 +43,11 @@ class User(UserMixin,db.Model):
     id = db.Column(db.Integer,primary_key = True)
     username = db.Column(db.String(255),index = True)
     email = db.Column(db.String(255),unique = True,index = True)
-    # pitch_id = db.Column(db.Integer,db.ForeignKey('pitches.id'))
-    # comment_id = db.Column(db.Integer,db.ForeignKey('comments.id'))
-    # vote_id = db.Column(db.Integer,db.ForeignKey('votes.id'))
-    # bio = db.Column(db.String)
+    bio = db.Column(db.String)
     profile_pic_path = db.Column(db.String())
     pass_secure = db.Column(db.String(255))
+    # subcribers = db.relationship('Subscriber', backref ='user',lazy = "dynamic")
     posts = db.relationship('Post', backref ='user',lazy = "dynamic")
-    # comments = db.relationship('Comment',backref = 'user',lazy = "dynamic")
-    # votes = db.relationship('Vote',backref = 'user',lazy = "dynamic")
 
     @property
     def password(self):
@@ -68,6 +64,17 @@ class User(UserMixin,db.Model):
     def __repr__(self):
         return f'User {self.username}'
 
+class Subscriber(db.Model):
+    __tablename__ = 'subscribers'
+
+    id = db.Column(db.Integer,primary_key = True)
+    username = db.Column(db.String(255),index = True)
+    email = db.Column(db.String(255),unique = True,index = True)
+    # user_id = db.Column(db.Integer,db.ForeignKey('users.id'))
+
+    def __repr__(self):
+            return f'User {self.username}'
+
 class Post(db.Model):
     __tablename__ = 'posts'
 
@@ -75,16 +82,7 @@ class Post(db.Model):
     name = db.Column(db.String)
     user_id = db.Column(db.Integer,db.ForeignKey('users.id'))
     posted = db.Column(db.DateTime,default=datetime.utcnow)
-    # comment_id = db.Column(db.Integer,db.ForeignKey('comments.id'))
-    # vote_id = db.Column(db.Integer,db.ForeignKey('votes.id'))
     comments = db.relationship('Comment',backref ='comments',lazy = "dynamic")
-
-
-    # users = db.relationship('User',backref = 'pitch',lazy="dynamic")
-
-    # def save_pitch(self):
-    #     db.session.add(self)
-    #     db.session.commit()
 
     @classmethod
     def get_pitches(cls,id):
@@ -116,6 +114,7 @@ class Quote(db.Model):
     id = db.Column(db.Integer,primary_key = True)
     author=db.column(db.String)
     quote=db.column(db.String)
+    permalink=db.column(db.String)
 
     @classmethod
     def get_comments(cls,id):

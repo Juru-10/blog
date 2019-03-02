@@ -1,11 +1,21 @@
 {% extends 'base.html'%}
 {% import "bootstrap/wtf.html" as wtf %}
+{% import 'macros.html' as macro%}
 
 {% block content %}
     <div class="container">
 
         <div class="col-md-8">
-
+          {%for post in posts%}
+          <li style="height:300px;"><h4>Post {{post.id}}</h4>
+            <p>{{post.name}}</p>
+            Posted on
+            <p>{{post.posted}}</p>
+            <p>By User {{post.user_id}}</p>
+          </li>
+          {%endfor%}
+          <h3>Comments</h3>
+          <p>{{macro.displayCommentList(comments)}}</p>
         </div>
 
         <div class="col-md-4">

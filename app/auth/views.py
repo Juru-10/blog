@@ -2,8 +2,8 @@ from . import auth
 from .. import db
 from flask import render_template,redirect,url_for, flash,request
 from flask_login import login_user
-from ..models import User
-from .forms import LoginForm,RegistrationForm
+from ..models import User,Subscriber
+from .forms import LoginForm,RegistrationForm,SubscriptionForm
 from flask_login import login_user,logout_user,login_required
 from ..email import mail_message
 
@@ -21,6 +21,20 @@ def login():
     title = "blog posts login"
     return render_template('auth/login.html',login_form = login_form,title=title)
 
+@auth.route('/subscribe',methods=['GET','POST'])
+def subscribe():
+    form = SubscriptionForm()
+    if form.validate_on_submit():
+        subscriber = Subscriber(email = form.email.data, username = form.username.data)
+        db.session.add(subscriber)
+        db.session.commit()
+
+        # mail_message("Welcome to pitches","email/welcome_user",subscriber.email,user=user)
+
+        return redirect(url_for('auth.subscribe'))
+        title = "Subscribe"
+    return render_template('auth/subscribe.html',subscription_form = form)
+
 @auth.route('/register',methods = ["GET","POST"])
 def register():
     form = RegistrationForm()
@@ -28,8 +42,6 @@ def register():
         user = User(email = form.email.data, username = form.username.data,password = form.password.data)
         db.session.add(user)
         db.session.commit()
-
-        mail_message("Welcome to pitches","email/welcome_user",user.email,user=user)
 
         return redirect(url_for('auth.login'))
         title = "New Account"
