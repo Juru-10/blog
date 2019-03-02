@@ -1,7 +1,7 @@
 from flask import render_template,request,redirect,url_for,abort
-from ..models import User,Pitch,Comment
+from ..models import User,Post,Comment
 from . import main
-from .forms import PitchForm,CommentForm,VoteForm,UpdateProfile
+from .forms import PostForm,CommentForm,UpdateProfile
 from .. import db,photos
 from flask_login import login_required,current_user
 import markdown2
@@ -12,12 +12,16 @@ def index():
     View root page function that returns the index page and its data
     '''
     title = 'Home - Welcome to The best News Review Website Online'
-    pitches=Pitch.query.all()
+    posts=Post.query.all()
+
+    print(posts)
     users= None
-    for pitch in pitches:
-        users= User.query.filter_by(id=pitch.user_id).all()
+    for post in posts:
+        comments=Comment.query.filter_by(id=post.id).all()
+        for comment in comments:
+
         # print(users.username)
-    return render_template('index.html', title = title,pitches=pitches, users=users)
+            return render_template('index.html', title = title,posts=posts, users=users)
 
 @main.route('/user/<uname>')
 def profile(uname):
@@ -65,62 +69,58 @@ def update_bio(uname):
 #     format_pitch = markdown2.markdown(pitch.movie_pitch,extras=["code-friendly", "fenced-code-blocks"])
 #     return render_template('new_pitch.html',pitch = pitch,format_pitch=format_pitch)
 
-@main.route('/new_pitch/',methods = ['GET','POST'])
+@main.route('/new_post/',methods = ['GET','POST'])
 @login_required
-def new_pitch():
-    form = PitchForm()
+def new_post():
+    form = PostForm()
 
     if form.validate_on_submit():
-        pitch = Pitch(name = form.name.data, user_id = current_user.id)
-        db.session.add(pitch)
+        post = Post(name = form.name.data, user_id = current_user.id)
+        db.session.add(post)
         db.session.commit()
         user=User.query.filter_by(id = current_user.id).first()
-        return redirect(url_for('.new_pitch',uname=user.username))
+        # return redirect(url_for('.new_post',uname=user.username))
 
-        # return redirect(url_for('.index'))
-    return render_template('profile/new_pitch.html',pitch_form=form)
+        return redirect(url_for('.index'))
+    return render_template('profile/new_post.html',post_form=form)
 
-@main.route('/new_comment/',methods = ['GET','POST'])
+@main.route('/new_comment/<int:id>',methods = ['GET','POST'])
 @login_required
-def new_comment():
+def new_comment(id):
     form = CommentForm()
-    # comments = get_comment(id)
-
     if form.validate_on_submit():
-        pitch = Pitch(name = form.name.data, user_id = current_user.id)
-        comment = Comment(name = form.name.data, pitch_id = pitch.id)
+        comment = Comment(name = form.name.data, post_id = id)
         db.session.add(comment)
         db.session.commit()
-        user=User.query.filter_by(id = pitch.id).first()
         return redirect(url_for('.index'))
 
     return render_template('profile/new_comment.html',comment_form=form)
 
-@main.route('/new_vote/',methods = ['GET','POST'])
-@login_required
-def new_vote():
-    form = VoteForm()
-    # votes = get_vote(id)
-
-    if form.validate_on_submit():
-        pitch = Pitch(name = form.name.data, user_id = current_user.id)
-        upvote = Vote(upvote = form.validate_on_submit(),pitch_id = pitch.id)
-        downvote = Vote(downvote = form.validate_on_submit(),pitch_id = pitch.id)
-        up=0
-        down=0
-        for upvote in vote:
-            up+=1
-            db.session.add(upvote=up)
-            db.session.commit()
-        for downvote in vote:
-            down+=1
-            db.session.add(downvote=down)
-            db.session.commit()
-        user=User.query.filter_by(id = pitch.id).first()
-        return redirect(url_for('.index'))
-
-    return render_template('profile/new_comment.html',comment_form=form)
-    return render_template('new_vote.html',upvote = upvote, downvote = downvote, vote_form=form, votes=votes)
+# @main.route('/new_vote/',methods = ['GET','POST'])
+# @login_required
+# def new_vote():
+#     form = VoteForm()
+#     # votes = get_vote(id)
+#
+#     if form.validate_on_submit():
+#         pitch = Pitch(name = form.name.data, user_id = current_user.id)
+#         upvote = Vote(upvote = form.validate_on_submit(),pitch_id = pitch.id)
+#         downvote = Vote(downvote = form.validate_on_submit(),pitch_id = pitch.id)
+#         up=0
+#         down=0
+#         for upvote in vote:
+#             up+=1
+#             db.session.add(upvote=up)
+#             db.session.commit()
+#         for downvote in vote:
+#             down+=1
+#             db.session.add(downvote=down)
+#             db.session.commit()
+#         user=User.query.filter_by(id = pitch.id).first()
+#         return redirect(url_for('.index'))
+#
+#     return render_template('profile/new_comment.html',comment_form=form)
+#     return render_template('new_vote.html',upvote = upvote, downvote = downvote, vote_form=form, votes=votes)
 
 @main.route('/user/<uname>/update/pic',methods= ['POST'])
 @login_required
