@@ -118,3 +118,13 @@ class Comment(db.Model):
 
     def __repr__(self):
         return f'User {self.name}'
+
+class Quote(db.Model):
+    __tablename__ = 'quotes'
+
+    author=db.column(db.String)
+    quote=db.column(db.String)
+    return quote
+
+    def __repr__(self):
+        return f'Quote {self.quote}'
