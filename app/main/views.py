@@ -13,14 +13,13 @@ def index():
     '''
     title = 'Home - Welcome to The best News Review Website Online'
     posts=Post.query.all()
-
+    comments=Comment.query.all()
     print(posts)
     users= None
     for post in posts:
-        comments=Comment.query.filter_by(id=post.id).all()
+
         for comment in comments:
 
-        # print(users.username)
             return render_template('index.html', title = title,posts=posts, users=users)
 
 @main.route('/user/<uname>')
@@ -73,19 +72,17 @@ def update_bio(uname):
 @login_required
 def new_post():
     form = PostForm()
-
     if form.validate_on_submit():
         post = Post(name = form.name.data, user_id = current_user.id)
         db.session.add(post)
         db.session.commit()
-        user=User.query.filter_by(id = current_user.id).first()
+        # user=User.query.filter_by(id = current_user.id).first()
         # return redirect(url_for('.new_post',uname=user.username))
 
         return redirect(url_for('.index'))
     return render_template('profile/new_post.html',post_form=form)
 
 @main.route('/new_comment/<int:id>',methods = ['GET','POST'])
-@login_required
 def new_comment(id):
     form = CommentForm()
     if form.validate_on_submit():

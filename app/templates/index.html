@@ -22,8 +22,8 @@
       <p>{{post.name}}</p>
       <p>By User {{post.user_id}}</p>
       <p><a href="{{url_for('main.new_comment',id=post.id)}}">Comment</a></p>
+      <h3>Comments</h3>
       {%for comment in comments%}
-        <h3>Comments</h3>
         <p>{{comment.name}}</p>
       {%endfor%}
       <p>Posted on {{post.posted}}</p>
