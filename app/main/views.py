@@ -2,13 +2,14 @@ from flask import render_template,request,redirect,url_for,abort
 from ..models import User,Post,Comment,Subscriber
 from ..requests import get_quotes
 from . import main
-from .forms import PostForm,CommentForm,UpdateProfile
+from .forms import PostForm,CommentForm,DelForm,UpdateProfile
 from app.auth.forms import SubscriptionForm
 from .. import db,photos
 from flask_login import login_required,current_user
 import markdown2
 from ..email import mail_message
 from app.auth import views
+# from sqlalchemy import desc
 
 @main.route('/',methods = ['GET','POST'])
 def index():
@@ -18,6 +19,7 @@ def index():
     quotes=get_quotes()
     title = 'Home - Welcome to The best Blogging Website Online'
     posts=Post.query.all()
+    # desc(posts)
     users= None
     for post in posts:
         comments=Comment.query.filter_by(post_id=post.id).all()
@@ -85,17 +87,31 @@ def new_post():
         return redirect(url_for('.index'))
     return render_template('profile/new_post.html',post_form=form)
 
+# @main.route('/delete_post/<int:id>',methods = ['GET','POST'])
+# def del_post(id):
+
+
 @main.route('/new_comment/<int:id>',methods = ['GET','POST'])
 def new_comment(id):
     form = CommentForm()
+    form2=DelForm()
+
     posts=Post.query.filter_by(id=id).all()
     comments=Comment.query.filter_by(post_id=id).all()
     if form.validate_on_submit():
         comment = Comment(name = form.name.data, post_id = id)
         db.session.add(comment)
         db.session.commit()
+
+    if form2.validate_on_submit():
+        comment=Comment.query.filter_by(id=id).delete()
+        # db.session.delete(comment)
+        db.session.commit()
+
+    # if button.click()
+
         return redirect(url_for('.index'))
-    return render_template('profile/new_comment.html',comment_form=form,comments=comments,posts=posts)
+    return render_template('profile/new_comment.html',comment_form=form,del_form=form2,comments=comments,posts=posts)
 
 # @main.route('/new_vote/',methods = ['GET','POST'])
 # @login_required

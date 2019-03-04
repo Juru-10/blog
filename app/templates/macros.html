@@ -1,5 +1,8 @@
+{% import "bootstrap/wtf.html" as wtf %}
+
 {% macro displayCommentList(comments) %}
   {%for comment in comments%}
-    <p>{{comment.name}}</p>
+    <p>{{comment.name}}
+    {{ wtf.quick_form(del_form) }}
   {%endfor%}
 {% endmacro %}

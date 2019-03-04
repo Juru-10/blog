@@ -20,18 +20,27 @@
   </div>
 
   <h1 style="text-align:center;margin-bottom:80px;">Posts</h1>
-  <div class="row" id='post' style="display:grid;grid-template-columns: 30% 30% 30%;
-    grid-auto-rows: 300px;
-    grid-gap: 60px;">
-    {%for post in posts%}
-    <li class="well"style="height:300px;"><h4>Post {{post.id}}</h4>
-      <p>{{post.name}}</p>
-      Posted on
-      <p>{{post.posted}}</p>
-      <p>By User {{post.user_id}}</p>
-      <p><a href="{{url_for('main.new_comment',id=post.id)}}">More</a></p>
-    </li>
-    {%endfor%}
+  <div class="row" id='post'>
+    <div class="" style="display:grid;grid-template-columns: 30% 30% 30%;
+      grid-auto-rows: 300px;
+      grid-gap: 60px;">
+      {%for post in posts%}
+      <li class="well"style="height:300px;"><h4>Post {{post.id}}</h4>
+        <p>{{post.name}}</p>
+        Posted on
+        <p>{{post.posted}}</p>
+        {% if current_user.is_authenticated %}
+        <p>By User {{post.user_id}}</p>
+        {%endif%}
+        <p><a href="{{url_for('main.new_comment',id=post.id)}}">More</a></p>
+        {% if current_user.is_authenticated %}
+        <button type="button" name="button" id="upd">Update</button>
+        <button type="button" name="button" id="del">Delete</button>
+        {%endif%}
+      </li>
+      {%endfor%}
+    </div>
+
   </div>
 </div>
 {% endblock%}

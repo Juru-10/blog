@@ -41,7 +41,7 @@ class DevConfig(Config):
     Args:
         Config: The parent configuration class with General configuration settings
     '''
-    SECRET_KEY = 'secretkey'
+    SECRET_KEY = 'secretkey2'
     SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://wecode:123456@localhost/blog'
     DEBUG = True
 

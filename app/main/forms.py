@@ -12,10 +12,9 @@ class CommentForm(FlaskForm):
     name = StringField('Comment',validators=[Required()])
     submit = SubmitField('Submit')
 
-# class SubForm(FlaskForm):
-#
-#     name = StringField('Comment',validators=[Required()])
-#     submit = SubmitField('Submit')
+class DelForm(FlaskForm):
+
+    submit = SubmitField('Delete')
 
 class UpdateProfile(FlaskForm):
     bio = TextAreaField('Tell us about you.',validators = [Required()])

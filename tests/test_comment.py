@@ -15,4 +15,4 @@ class CommentModelTest(unittest.TestCase):
 
         # self.new_comment.save_comment()
         got_comments = Comment.get_comments(12345)
-        self.assertTrue(len(got_comments) == 1)
+        self.assertTrue(len(got_comments) == 0)

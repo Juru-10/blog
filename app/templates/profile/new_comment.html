@@ -1,6 +1,5 @@
 {% extends 'base.html'%}
 {% import "bootstrap/wtf.html" as wtf %}
-{% import 'macros.html' as macro%}
 
 {% block content %}
     <div class="container">
@@ -14,8 +13,13 @@
             <p>By User {{post.user_id}}</p>
           </li>
           {%endfor%}
+          {% if current_user.is_authenticated %}
           <h3>Comments</h3>
-          <p>{{macro.displayCommentList(comments)}}</p>
+          {%for comment in comments%}
+            <p>{{comment.name}}
+            {{ wtf.quick_form(del_form) }}
+          {%endfor%}
+          {%endif%}
         </div>
 
         <div class="col-md-4">
