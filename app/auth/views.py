@@ -28,9 +28,6 @@ def subscribe():
         subscriber = Subscriber(email = form.email.data, username = form.username.data)
         db.session.add(subscriber)
         db.session.commit()
-
-        # mail_message("Welcome to pitches","email/welcome_user",subscriber.email,user=user)
-
         return redirect(url_for('auth.subscribe'))
         title = "Subscribe"
     return render_template('auth/subscribe.html',subscription_form = form)

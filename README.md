@@ -37,7 +37,7 @@ OR
 
 ## link to it on Heroku
 
-https://blog10.herokuapp.com/
+https://blogging10.herokuapp.com/
 
 ## Known Bugs
 

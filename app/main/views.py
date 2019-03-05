@@ -8,7 +8,7 @@ from .. import db,photos
 from flask_login import login_required,current_user
 import markdown2
 from ..email import mail_message
-from app.auth import views
+from app.auth import views,forms
 # from sqlalchemy import desc
 
 @main.route('/',methods = ['GET','POST'])
@@ -82,8 +82,7 @@ def new_post():
         subscribers=Subscriber.query.filter_by(email=Subscriber.email).all()
         form = SubscriptionForm()
         for subscriber in subscribers:
-            subscriber = Subscriber(email = form.email.data, username = form.username.data)
-            mail_message("Welcome to pitches","email/welcome_user",subscriber.email)
+            mail_message("A New Blog Post is added","email/welcome_user",subscriber.email,subscribers=subscribers)
         return redirect(url_for('.index'))
     return render_template('profile/new_post.html',post_form=form)
 
